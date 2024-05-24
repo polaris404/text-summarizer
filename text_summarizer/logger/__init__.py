@@ -2,7 +2,7 @@ import os
 import sys
 import logging
 
-logging_format = "[Time: %(asctime)s\nLevel: %(levelname)s\nModule: %(module)s\nMessage: %(message)s]"
+logging_format = "[Time:%(asctime)s\nLevel:%(levelname)s\nModule:%(module)s\nMessage:%(message)s]"
 
 log_dir = "logs"
 log_filepath = os.path.join(log_dir, "running_logs.log")
