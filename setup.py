@@ -19,6 +19,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
-    package_dir={"": "text-summarizer"},
-    packages=setuptools.find_packages(where='text-summarizer')
+    package_dir={"": "text_summarizer"},
+    packages=setuptools.find_packages(where='text_summarizer')
 )
