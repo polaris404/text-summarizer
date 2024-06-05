@@ -2,6 +2,7 @@ from transformers import TrainingArguments, Trainer
 from transformers import DataCollatorForSeq2Seq
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from datasets import load_dataset, load_from_disk
+from text_summarizer.logger import logger
 import torch
 import os
 
@@ -12,6 +13,8 @@ class ModelTrainer:
 
     def train(self):
         device = "cuda" if torch.cuda.is_available() else "cpu"
+        
+        logger.info(f'--------Device: {device}--------')
         tokenizer = AutoTokenizer.from_pretrained(self.config.model)
         model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(self.config.model).to(device)
 
@@ -20,7 +23,7 @@ class ModelTrainer:
         seq2seq_data_collator = DataCollatorForSeq2Seq(tokenizer, model=model_pegasus)
 
         dataset_pt = load_from_disk(self.config.data_path)
-        train_test_split = dataset_pt['train'].train_test_split(test_size=0.8)
+        train_test_split = dataset_pt['train'].train_test_split(test_size=0.1)
         train_subset = train_test_split['train']
 
         trainer_args = TrainingArguments(
@@ -36,14 +39,6 @@ class ModelTrainer:
             save_steps=self.config.save_steps,
             gradient_accumulation_steps=self.config.gradient_accumulation_steps
         )
-
-        # trainer_args = TrainingArguments(
-        #     output_dir=self.config.root_dir, num_train_epochs=1, warmup_steps=500,
-        #     per_device_train_batch_size=1, per_device_eval_batch_size=1,
-        #     weight_decay=0.01, logging_steps=10,
-        #     evaluation_strategy='steps', eval_steps=500, save_steps=1e6,
-        #     gradient_accumulation_steps=16
-        # ) 
 
         trainer = Trainer(model=model_pegasus, args=trainer_args,
                   tokenizer=tokenizer, data_collator=seq2seq_data_collator,

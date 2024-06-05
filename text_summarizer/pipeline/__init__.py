@@ -3,6 +3,10 @@ from text_summarizer.components.data_ingestion import DataIngestion
 from text_summarizer.components.data_validation import DataValidation
 from text_summarizer.components.data_transformation import DataTransformation
 from text_summarizer.components.model_trainer import ModelTrainer
+from text_summarizer.components.model_evaluation import ModelEvaluation
+
+from transformers import AutoTokenizer
+from transformers import pipeline
 
 class DataIngestionTrainingPipeline:
     def __init__(self):
@@ -56,3 +60,30 @@ class ModelTrainerPipeline:
             model_trainer.train()
         except Exception as e:
             raise e
+
+class ModelEvaluationPipeline:
+    def __init__(self):
+        pass
+
+    def main(self):
+        try:
+            config = ConfigurationManager()
+            model_evaluation_config = config.get_model_evaluation_config()
+            model_evaluation = ModelEvaluation(config=model_evaluation_config)
+            model_evaluation.evaluate()
+        except Exception as e:
+            raise e
+
+class PredictionPipeline:
+    def __init__(self):
+        self.config = ConfigurationManager().get_model_evaluation_config()
+
+    def predict(self, text):
+        tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
+        gen_kwargs = {"length_penalty": 0.8, "num_beams":8, "max_length": 128}
+
+        pipe = pipeline("summarization", model=self.model_path, tokenizer=tokenizer)
+
+        output = pipe(text, **gen_kwargs)[0]["summary_text"]
+
+        return output
