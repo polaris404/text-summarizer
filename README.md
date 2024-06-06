@@ -1,4 +1,4 @@
-# text-summarization
+# Text Summarization
 
 >**Notes:** 
 >* This project focuses mainly on End to End implementation rather than the accuracy of the Model. I've reduced the actual training dataset to about 10-20% as my device cannot handle this huge dataset.
