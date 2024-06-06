@@ -25,4 +25,4 @@ Each of the components mentioned follow the workflow mentioned:
 * **Pipeline:** Now we setup a pipeline for each step that involves getting configuration and passing it to appropriate component.
 * **Modifying `main.py`:** After the pipeline is being setup, we add the pipeline to this file. Once all the piplines are created we import them into the file and run them in the proper order.
 
-> For user interface, I've implemented a localhost server using FastAPI and set routes for training and giving input to the model.
+> For user interface, I've implemented a localhost server using FastAPI and set routes for training as well as giving input to the model.
